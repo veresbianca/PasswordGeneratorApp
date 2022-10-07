@@ -1,9 +1,12 @@
 import './App.css';
+import PasswordDisplay from './PasswordDisplay';
+import PasswordGenerator from './PasswordGenerator';
 
 function App() {
   return (
-    <div className="App">
-      ...
+    <div>
+      <PasswordDisplay />
+      <PasswordGenerator />
     </div>
   );
 }
