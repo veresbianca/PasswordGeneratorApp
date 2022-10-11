@@ -1,0 +1,42 @@
+.generate-pass-btn {
+	width: 100%;
+    height: 56px;
+    background: var(--neon-green);
+    font-family: var(--base-font-fammily);
+    font-size: var(--regular-font-size);
+    cursor: pointer;
+}
+
+.generate-pass-btn:hover {
+	border: 2px solid var(--neon-green);
+	background-color: var(--dark-grey);
+	color: var(--neon-green);
+}
+
+.generate-pass-btn:hover .neon-arrow {
+	display: inline-block;
+}
+
+.generate-pass-btn:hover .default-arrow {
+	display: none;
+}
+
+@media (min-width: 768px) {
+	.generate-pass-btn {
+		height: 66px;
+	}
+}
+
+.generate-pass-btn img {
+	margin-left: 16px;
+}
+
+.generate-pass-btn img.neon-arrow {
+	display: none;
+}
+
+@media (min-width: 768px) {
+	.generate-pass-btn img {
+		margin-left: 24px;	
+	}
+}

@@ -1,3 +1,27 @@
-.App {
+.app-component__container {
+  --mobile-heading-margin-bottom: 16px;
+  --tablet-heading-margin-bottom: 30px;
+  --component-width: 344px;
+
+  width: var(--component-width);
+}
+
+@media (min-width: 768px) {
+  .app-component__container {
+    width: 540px;
+  }
+}
+
+.app-component__title {
+  margin-bottom: var(--mobile-heading-margin-bottom);
+  font-size: var(--regular-font-size);
   text-align: center;
+  color: var(--grey);
+}
+
+@media (min-width: 768px) {
+  .app-component__title {
+    margin-bottom: var(--tablet-heading-margin-bottom);
+    font-size: var(--medium-font-size);
+  }
 }
