@@ -1,42 +1,46 @@
-import './StrengthDisplay.css'
+import './StrengthDisplay.css';
+
+const barNumber = [1, 2, 3, 4]
+
+const currentStatus = 'medium';
+
+const statusProperties = {
+	'default': {
+		statusColor: 'none',
+		barToBeFilled: 0,
+		statusLabel: ''
+	},
+	'too_weak': {
+		statusColor: 'red',
+		barToBeFilled: 1,
+		statusLabel: 'TOO WEAK!'
+	},
+	'weak': {
+		statusColor: 'orange',
+		barToBeFilled: 2,
+		statusLabel: 'WEAK'
+	},
+	'medium': {
+		statusColor: 'yellow',
+		barToBeFilled: 3,
+		statusLabel: 'MEDIUM'
+	},
+	'strong': {
+		statusColor: 'neon-green',
+		barToBeFilled: 4,
+		statusLabel: 'STRONG'
+	}
+}
 
 function StrengthDisplay() {
-	const statusColor = {
-		'default': 'none',
-		'too_weak' : 'red',
-		'weak' : 'orange',
-		'medium' : 'yellow',
-		'strong' : 'neon-green'
-	};
-
-	const barToBeFilled = {
-		'default': 0,
-		'too_weak': 1,
-		'weak': 2,
-		'medium': 3,
-		'strong': 4
-	}
-
-	const statusLabel = {
-		'default': '',
-		'too_weak': 'TOO WEAK!',
-		'weak': 'WEAK',
-		'medium': 'MEDIUM',
-		'strong': 'STRONG'
-	}
-
-	const barNumber = [1, 2, 3, 4]
-
-	const currentStatus = 'default';
-
 	return (
 		<div className="strength-display__container">
 			<span className="strength-display__label">STRENGTH</span>
 			<div className="strength-display__status-container">
-				<span className="strength-display--status">{statusLabel[currentStatus]}</span>
-				<div className={`strength-bar__container status-${statusColor[currentStatus]}`}>
+				<span className="strength-display--status">{statusProperties[currentStatus].statusLabel}</span>
+				<div className={`strength-bar__container status-${statusProperties[currentStatus].statusColor}`}>
 					{barNumber.map((bar, i) => {
-			            return (<span key={i} className={`strength-bar ${barToBeFilled[currentStatus] <= i ? 'empty' : ''}`}></span>) 
+			            return (<span key={i} className={`strength-bar ${statusProperties[currentStatus].barToBeFilled <= i ? 'empty' : ''}`}></span>) 
 			        })}
 				</div>
 			</div>

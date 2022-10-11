@@ -26,17 +26,17 @@ function PasswordDisplay() {
 	const renderElement = () => {
    		if (copiedPass) {
 			return(
-				<img src={CopyIconInactive} 
-					 alt="Copy Icon Inactive" 
-					 className="copy_icon--inactive" 
-					 onClick={onClickHandler}/>
-		 	)
-		} else {
-			return(
 				<>
 					<span className={passStatusClassName}>COPIED</span>
 					<img src={CopyIcon} alt="Copy Icon" className="copy_icon--active"/>
-				</>
+			 	</>
+		 	)
+		} else {
+			return(
+				<img src={CopyIconInactive} 
+						 alt="Copy Icon Inactive" 
+						 className="copy_icon--inactive" 
+						 onClick={onClickHandler}/>
 			)
 		}
 	}
