@@ -2,11 +2,11 @@ import { useState } from 'react';
 
 import './PasswordDisplay.css';
 
-import CopyIcon from './fa-regular_copy.svg';
-import CopyIconInactive from './copy-icon-inactive.svg';
+import CopyIcon from '../images/copy-icon-active.svg';
+import CopyIconInactive from '../images/copy-icon-inactive.svg';
 
 function PasswordDisplay() {
-	const [emptyPass, setPass] = useState(true);
+	const [emptyPass, setPass] = useState(false);
 	const copiedPass = false;
 
 	let titleClassName = 'password-display--title';
@@ -23,13 +23,29 @@ function PasswordDisplay() {
 		console.log('icon is clicked')
 	}
 
+	const renderElement = () => {
+   		if (copiedPass) {
+			return(
+				<img src={CopyIconInactive} 
+					 alt="Copy Icon Inactive" 
+					 className="copy_icon--inactive" 
+					 onClick={onClickHandler}/>
+		 	)
+		} else {
+			return(
+				<>
+					<span className={passStatusClassName}>COPIED</span>
+					<img src={CopyIcon} alt="Copy Icon" className="copy_icon--active"/>
+				</>
+			)
+		}
+	}
+
 	return (
 		<div className="password-display__container">
       		<span className={titleClassName}>PoE3xs8Hss</span>
       		<div className="password-display-copy__container">
-      			<span className={passStatusClassName}>COPIED</span>
-      			<img src={CopyIcon} alt="Copy Icon" className="copy_icon--active" onClick={onClickHandler}/>
-      			<img src={CopyIconInactive} alt="Copy Icon Inactive" className="copy_icon--inactive" onClick={onClickHandler}/>
+      			{renderElement()}
       		</div>
 		</div>
 	)

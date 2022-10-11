@@ -1,7 +1,7 @@
 import './App.css';
 import './ThemeVariables.css';
-import PasswordDisplay from './PasswordDisplay';
-import PasswordGenerator from './PasswordGenerator';
+import PasswordDisplay from './components//PasswordDisplay';
+import PasswordGenerator from './components/PasswordGenerator';
 
 function App() {
   return (

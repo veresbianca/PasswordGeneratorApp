@@ -1,7 +1,7 @@
 import './GeneratePassButton.css';
 
-import BtnArrow from './bx_arrow-to-left.svg';
-import BtnArrowNeon from './arrow-neon.svg';
+import BtnArrow from '../images/arrow-black.svg';
+import BtnArrowNeon from '../images/arrow-neon.svg';
 
 function GeneratePassButton() {
 	return (
