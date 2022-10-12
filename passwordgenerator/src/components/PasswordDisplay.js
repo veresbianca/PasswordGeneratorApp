@@ -5,10 +5,7 @@ import './PasswordDisplay.css';
 import CopyIcon from '../images/copy-icon-active.svg';
 import CopyIconInactive from '../images/copy-icon-inactive.svg';
 
-function PasswordDisplay() {
-	const [emptyPass, setPass] = useState(false);
-	const copiedPass = false;
-
+function PasswordDisplay({handleClick, password, emptyPass, copiedPass}) {
 	let titleClassName = 'password-display--title';
 	if (emptyPass) {
 		titleClassName += ' empty';
@@ -17,10 +14,6 @@ function PasswordDisplay() {
 	let passStatusClassName = 'password-display--status';
 	if (copiedPass) {
 		passStatusClassName += ' copied';
-	}
-
-	const onClickHandler = () => {
-		console.log('icon is clicked')
 	}
 
 	const renderElement = () => {
@@ -36,14 +29,14 @@ function PasswordDisplay() {
 				<img src={CopyIconInactive} 
 						 alt="Copy Icon Inactive" 
 						 className="copy_icon--inactive" 
-						 onClick={onClickHandler}/>
+						 onClick={handleClick}/>
 			)
 		}
 	}
 
 	return (
 		<div className="password-display__container">
-      		<span className={titleClassName}>PoE3xs8Hss</span>
+      		<span className={titleClassName}>{password}</span>
       		<div className="password-display-copy__container">
       			{renderElement()}
       		</div>

@@ -2,7 +2,7 @@ import './StrengthDisplay.css';
 
 const barNumber = [1, 2, 3, 4]
 
-const currentStatus = 'medium';
+// const currentStatus = 'medium';
 
 const statusProperties = {
 	'default': {
@@ -32,15 +32,15 @@ const statusProperties = {
 	}
 }
 
-function StrengthDisplay() {
+function StrengthDisplay({strengthStatus}) {
 	return (
 		<div className="strength-display__container">
 			<span className="strength-display__label">STRENGTH</span>
 			<div className="strength-display__status-container">
-				<span className="strength-display--status">{statusProperties[currentStatus].statusLabel}</span>
-				<div className={`strength-bar__container status-${statusProperties[currentStatus].statusColor}`}>
+				<span className="strength-display--status">{statusProperties[strengthStatus].statusLabel}</span>
+				<div className={`strength-bar__container status-${statusProperties[strengthStatus].statusColor}`}>
 					{barNumber.map((bar, i) => {
-			            return (<span key={i} className={`strength-bar ${statusProperties[currentStatus].barToBeFilled <= i ? 'empty' : ''}`}></span>) 
+			            return (<span key={i} className={`strength-bar ${statusProperties[strengthStatus].barToBeFilled <= i ? 'empty' : ''}`}></span>) 
 			        })}
 				</div>
 			</div>

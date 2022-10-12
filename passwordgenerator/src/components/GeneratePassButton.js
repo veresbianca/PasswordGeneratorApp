@@ -3,10 +3,10 @@ import './GeneratePassButton.css';
 import BtnArrow from '../images/arrow-black.svg';
 import BtnArrowNeon from '../images/arrow-neon.svg';
 
-function GeneratePassButton() {
+function GeneratePassButton({handleFormSubmit}) {
 	return (
 		<div className="button__container">
-			<button className="generate-pass-btn" type='button'>
+			<button className="generate-pass-btn" type='button' onClick={handleFormSubmit}>
 				<span>GENERATE</span>
 				<img src={BtnArrow} alt="Arrow Button" className="default-arrow" />
 				<img src={BtnArrowNeon} alt="Arrow Button" className="neon-arrow" />	
