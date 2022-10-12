@@ -55,48 +55,47 @@ function PasswordGenerator() {
     	const too_weak = !strong && !medium;
 
     	if(strong.test(password)) {
+    		debugger
     		return 'strong';
     	} else if (medium.test(password)) {
+    		debugger
     		return 'medium';
     	} else if (weak.test(password)) {
+    		debugger
     		return 'weak';
-    	} else return 'too_weak';
+    	} else {
+    		debugger
+    		return 'too_weak';
+    	} 
     }
 
     const generatePassword = () => {
     	let passwordChar = '';
+    	let password = '';
 
-        if(formInputData.useUppercaseLetters) {
-        	passwordChar += passwordConfiguration.uppercaseLetters;
-        }
-
-        if(formInputData.useLowercaseLetters) {
-        	passwordChar += passwordConfiguration.lowercaseLetters;
-        }
-
-        if(formInputData.includeNumbers) {
-        	passwordChar += passwordConfiguration.numbers;
-        }
-
-        if(formInputData.includeSymbols) {
-        	passwordChar += passwordConfiguration.symbols;
-        }
-
-        if(formInputData.characterLength >= minPassLength) {
-        	let password = '';
-
-        	for (let i = 0; i < formInputData.characterLength; i++) {
-        		let randomNumber = Math.floor(Math.random() * passwordChar.length);
-   				password += passwordChar.substring(randomNumber, randomNumber + 1);
+    	for (let i = 0; i < formInputData.characterLength; i+=Object.keys(formInputData).filter(key=>formInputData[key]).length - 1) {
+    		if(formInputData.useUppercaseLetters) {
+        		password += getRandomCharacter(passwordConfiguration.uppercaseLetters);
         	}
 
-        	return password;
-        } else {
-        	setStrengthStatus('too_weak');
+        	if(formInputData.useLowercaseLetters) {
+        		password += getRandomCharacter(passwordConfiguration.lowercaseLetters);
+        	}
 
-        	setPassword(passwordPlaceholder);
-        	setPassStatus(true);
+        	if(formInputData.includeNumbers) {
+        		password += getRandomCharacter(passwordConfiguration.numbers);
+        	}
+
+        	if(formInputData.includeSymbols) {
+        		password += getRandomCharacter(passwordConfiguration.symbols);
+        	}
         }
+
+        return password;
+    }
+
+    const getRandomCharacter = (characters) => {
+    	return characters.charAt(Math.floor(Math.random() * characters.length))
     }
 
  	const handleInputChange = (event) => {
