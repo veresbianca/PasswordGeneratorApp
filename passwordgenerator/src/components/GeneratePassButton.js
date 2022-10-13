@@ -9,7 +9,7 @@ function GeneratePassButton({handleFormSubmit}) {
 			<button className="generate-pass-btn" type='button' onClick={handleFormSubmit}>
 				<span>GENERATE</span>
 				<img src={BtnArrow} alt="Arrow Button" className="default-arrow" />
-				<img src={BtnArrowNeon} alt="Arrow Button" className="neon-arrow" />	
+				<img src={BtnArrowNeon} alt="Arrow Button" className="neon-arrow" />
 			</button>
 		</div>
 	)
