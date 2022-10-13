@@ -19,6 +19,8 @@
 }
 
 .strength-display__label {
+	display: flex;
+	align-items: center;
 	font-size: var(--regular-font-size);
 	color: var(--grey);
 }
@@ -42,7 +44,7 @@
 
 @media (min-width: 768px) {
 	.strength-display--status {
-		font-size: var(----medium-font-size);
+		font-size: var(--medium-font-size);
 	}
 }
 

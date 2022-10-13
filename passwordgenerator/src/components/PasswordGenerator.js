@@ -1,11 +1,11 @@
-import PasswordConfigurations from './PasswordConfigurations';
-import StrengthDisplay from './StrengthDisplay';
-import GeneratePassButton from './GeneratePassButton';
-import PasswordDisplay from './PasswordDisplay';
+import PasswordConfigurations from "./PasswordConfigurations";
+import StrengthDisplay from "./StrengthDisplay";
+import GeneratePassButton from "./GeneratePassButton";
+import PasswordDisplay from "./PasswordDisplay";
 
-import { useState } from 'react';
+import { useState } from "react";
 
-import './PasswordGenerator.css';
+import "./PasswordGenerator.css";
 
 const initialValues = {
   useUppercaseLetters: false,
@@ -16,143 +16,83 @@ const initialValues = {
 };
 
 const passwordConfiguration = {
-	numbers: '0123456789',
-	lowercaseLetters: 'abcdefghijklmnopqrstuvwxyz',
-	uppercaseLetters: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
-	symbols: '!@#$%^&*()'
-}
+  includeNumbers: "0123456789",
+  useLowercaseLetters: "abcdefghijklmnopqrstuvwxyz",
+  useUppercaseLetters: "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+  includeSymbols: "!@#$%^&*()",
+};
 
-// Make sure to remove all unused code before pushing a commit
-const minPassLength = 6;
-
-const passwordPlaceholder = 'P4$5W0rD!';
+const passwordPlaceholder = "P4$5W0rD!";
 
 function PasswordGenerator() {
   const [formInputData, setFormInputData] = useState(initialValues);
   const [currentPassword, setPassword] = useState(passwordPlaceholder);
-
-  /*
-   * This can be a derived state piece of date
-   * computed based on `currentPassword`
-   *
-   * Be careful when naming things. Every variable/function
-   * name should cleary express to the reader the reason for
-   * its existence.
-   *
-   * When naming boolean variables, it's a good practice
-   * to use the is/has verbs.
-   */
-  const [emptyPass, setPassStatus] = useState(true);
-
   const [strengthStatus, setStrengthStatus] = useState("default");
-  const [copiedPass, setCopiedPassStatus] = useState(false);
+  const [isPassCopied, setCopiedPassStatus] = useState(false);
+  let isEmptyPass = currentPassword === "P4$5W0rD!";
 
-  const handleFormSubmit = evnt => {
-    /*
-     * Given that you've grouped all the form
-     * related markup under a <form/> element,
-     * it makes senes for this function to be
-     * set on the `onSumbit` prop of the `<form/>`
-     * element
-     */
-    evnt.preventDefault();
+  const handleFormSubmit = (event) => {
+    event.preventDefault();
 
-    /* These 3 lines can be merged into one
-     * by passing the call to the generation function
-     * as a param of the state setter
-     */
-    let password = "";
-    password = generatePassword();
-    setPassword(password);
-
+    setPassword(generatePassword());
     setCopiedPassStatus(false);
-    setPassStatus(false);
-
-    /* These 3 lines can be merged into one
-     * by passing the call to the generation function
-     * as a param of the state setter
-     */
-    let strength = "";
-    strength = checkPasswordStrength(password);
-    setStrengthStatus(strength);
+    isEmptyPass = false;
+    setStrengthStatus(checkPasswordStrength(generatePassword()));
   };
 
-  const checkPasswordStrength = password => {
-    const strong = new RegExp("(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9])(?=.{6,})");
-    const medium = new RegExp(
-      "((?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9])(?=.{5,}))|((?=.*[a-z])(?=.*[A-Z])(?=.*[^A-Za-z0-9])(?=.{6,}))"
+  const checkPasswordStrength = (password) => {
+    const strong = new RegExp(
+      "(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9])(?=.{6,})"
     );
-    const weak = new RegExp("(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9])");
 
-    // Make sure to remove all unused code before pushing a commit
-    const too_weak = !strong && !medium;
+    const medium = new RegExp(
+      "^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{6,})"
+    );
+
+    const weak = new RegExp(
+      "(?=.*[a-z])(?=.{6,})|(?=.*[A-Z])(?=.{6,})|(?=.*[0-9])(?=.{6,})|(?=.*[^A-Za-z0-9])(?=.{6,})"
+    );
 
     if (strong.test(password)) {
-      /* Make sure to remove `debbuger` statements
-       * before pushing a commit
-       *
-       * Pro tip: You can configure eslint to statically check the code
-       */
-      debugger;
       return "strong";
     } else if (medium.test(password)) {
-      debugger;
       return "medium";
     } else if (weak.test(password)) {
-      debugger;
       return "weak";
     } else {
-      debugger;
       return "too_weak";
     }
   };
 
   const generatePassword = () => {
-    // Make sure to remove all unused code before pushing a commit
-    let passwordChar = "";
     let password = "";
 
-    for (
-      let i = 0;
-      i < formInputData.characterLength;
-      i += Object.keys(formInputData).filter(key => formInputData[key]).length - 1
-    ) {
-      /*
-       * Given that we will always generate a password
-       * that has a length equal to the slider's value,
-       * the last part of the `for` condition should be
-       * a simple increment
-       *
-       * The following code can be simplified if we
-       * store the value of the `filter` in a variable
-       * and use the `forEach` function to generate each type
-       * of character.
-       */
-      if (formInputData.useUppercaseLetters) {
-        password += getRandomCharacter(passwordConfiguration.uppercaseLetters);
-      }
+    for (let i = 0; i < parseInt(formInputData.characterLength); ) {
+      const criteria = Object.keys(formInputData).filter(
+        (key) => typeof formInputData[key] === "boolean" && formInputData[key]
+      );
 
-      if (formInputData.useLowercaseLetters) {
-        password += getRandomCharacter(passwordConfiguration.lowercaseLetters);
-      }
-
-      if (formInputData.includeNumbers) {
-        password += getRandomCharacter(passwordConfiguration.numbers);
-      }
-
-      if (formInputData.includeSymbols) {
-        password += getRandomCharacter(passwordConfiguration.symbols);
+      if (criteria.length) {
+        // eslint-disable-next-line no-loop-func
+        criteria.forEach((criterion) => {
+          if (i < parseInt(formInputData.characterLength)) {
+            password += getRandomCharacter(passwordConfiguration[criterion]);
+            i++;
+          }
+        });
+      } else {
+        return;
       }
     }
 
     return password;
   };
 
-  const getRandomCharacter = characters => {
+  const getRandomCharacter = (characters) => {
     return characters.charAt(Math.floor(Math.random() * characters.length));
   };
 
-  const handleInputChange = event => {
+  const handleInputChange = (event) => {
     const target = event.target;
     const value = target.type === "checkbox" ? target.checked : target.value;
     const name = target.name;
@@ -163,12 +103,7 @@ function PasswordGenerator() {
     });
   };
 
-  /*
-   * Be careful when naming things. Every variable/function
-   * name should cleary express to the reader the reason for
-   * its existence.
-   */
-  const handleClick = () => {
+  const handleCopyToClipboard = () => {
     if (currentPassword !== "") {
       navigator.clipboard.writeText(currentPassword);
       setCopiedPassStatus(true);
@@ -180,22 +115,18 @@ function PasswordGenerator() {
       <h1 className="app-component__title">Password Generator</h1>
       <PasswordDisplay
         password={currentPassword}
-        emptyPass={emptyPass}
-        copiedPass={copiedPass}
-        handleClick={handleClick}
+        isEmptyPass={isEmptyPass}
+        isPassCopied={isPassCopied}
+        handleClick={handleCopyToClipboard}
       />
       <div className="password-generator__container">
-        <form>
+        <form onSubmit={handleFormSubmit}>
           <PasswordConfigurations
             handleInputChange={handleInputChange}
             characterLength={formInputData.characterLength}
-            useUppercaseLetters={formInputData.useUppercaseLetters}
-            useLowercaseLetters={formInputData.useLowercaseLetters}
-            includeNumbers={formInputData.includeNumbers}
-            includeSymbols={formInputData.includeSymbols}
           />
           <StrengthDisplay strengthStatus={strengthStatus} />
-          <GeneratePassButton handleFormSubmit={handleFormSubmit} />
+          <GeneratePassButton />
         </form>
       </div>
     </div>
