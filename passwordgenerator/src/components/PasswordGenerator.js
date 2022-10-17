@@ -35,42 +35,25 @@ function PasswordGenerator() {
    * ONLY the `currentPassword`
    */
   const [strengthStatus, setStrengthStatus] = useState("default");
+  const [currentPassword, setCurrentPassword] = useState(passwordPlaceholder);
+  const [isPassCopied, setIsPassCopied] = useState(false);
+  const isEmptyPass = currentPassword === "P4$5W0rD!";
 
-  /*
-   * It's a best practice to make the single difference
-   * between a state variable and its setter only the `set` prefix.
-   *
-   * e.g. counter, setCounter
-   */
-  const [currentPassword, setPassword] = useState(passwordPlaceholder);
-  const [isPassCopied, setCopiedPassStatus] = useState(false);
-
-  /*
-   * This can be declared as a `const
-   * because it's derived state. When the state changes,
-   * so does this variable.
-   */
-  let isEmptyPass = currentPassword === "P4$5W0rD!";
-
-  const handleFormSubmit = event => {
+  const handleFormSubmit = (event) => {
     event.preventDefault();
 
-    setPassword(generatePassword());
-    setCopiedPassStatus(false);
-
-    /*
-     * Setting the value for this variable is not necessary
-     * because it's derived state
-     */
-    isEmptyPass = false;
-    setStrengthStatus(checkPasswordStrength(generatePassword()));
+    const generatedPassword = generatePassword();
+    setCurrentPassword(generatedPassword);
+    setIsPassCopied(false);
+    setStrengthStatus(checkPasswordStrength(currentPassword));
   };
-
   /*
    * This function has no value in being declared in this component
    */
-  const checkPasswordStrength = password => {
-    const strong = new RegExp("(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9])(?=.{6,})");
+  const checkPasswordStrength = (password) => {
+    const strong = new RegExp(
+      "(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9])(?=.{6,})"
+    );
 
     const medium = new RegExp(
       "^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{6,})"
@@ -80,54 +63,62 @@ function PasswordGenerator() {
       "(?=.*[a-z])(?=.{6,})|(?=.*[A-Z])(?=.{6,})|(?=.*[0-9])(?=.{6,})|(?=.*[^A-Za-z0-9])(?=.{6,})"
     );
 
-    /*
-     * Given that you're using the early return pattern,
-     * you can safely remove the `else` keywords in order
-     * to improve readability
-     */
     if (strong.test(password)) {
       return "strong";
-    } else if (medium.test(password)) {
-      return "medium";
-    } else if (weak.test(password)) {
-      return "weak";
-    } else {
-      return "too_weak";
     }
+
+    if (medium.test(password)) {
+      return "medium";
+    }
+
+    if (weak.test(password)) {
+      return "weak";
+    }
+
+    return "too_weak";
   };
 
   const generatePassword = () => {
     let password = "";
+    const criteria = Object.keys(formInputData).filter(
+      (key) => typeof formInputData[key] === "boolean" && formInputData[key]
+    );
 
-    /*
-     * Pentru fiecare index din lungimea parolei,
-     * Vreau sa generez un caracter luand in considerare
-     * valorile criteriilor selectate (lowercase, UPPERCASE, numar, simbol)
-     *
-     * Aleg aleatoriu criteriu pentru care generez caracterul,
-     * dar e necesar sa existe minim cate un caracter pentru
-     * fiecare criteriu selectat
-     */
+    criteria.forEach((criterion) => {
+      const randomChar = getRandomCharacter(passwordConfiguration[criterion]);
+      password = insertCharacterAtRandomPosition(password, randomChar);
+    });
 
-    for (let i = 0; i < parseInt(formInputData.characterLength); ) {
-      const criteria = Object.keys(formInputData).filter(
-        key => typeof formInputData[key] === "boolean" && formInputData[key]
-      );
+    const allCriteria = criteria.reduce((acc, criterion) => {
+      return acc + passwordConfiguration[criterion];
+    }, "");
 
-      if (criteria.length) {
-        // eslint-disable-next-line no-loop-func
-        criteria.forEach(criterion => {
-          if (i < parseInt(formInputData.characterLength)) {
-            password += getRandomCharacter(passwordConfiguration[criterion]);
-            i++;
-          }
-        });
-      } else {
-        return;
-      }
+    for (
+      let i = criteria.length;
+      i < parseInt(formInputData.characterLength);
+      i++
+    ) {
+      const randomChar = getRandomCharacter(allCriteria);
+      password = insertCharacterAtRandomPosition(password, randomChar);
+    }
+
+    // make sure password has correct length
+    if (password.length !== formInputData.characterLength) {
+      password = password.substring(0, formInputData.characterLength);
     }
 
     return password;
+  };
+
+  const insertCharacterAtRandomPosition = (pass, randomChar) => {
+    if (pass.length > 0) {
+      const randomPosition = Math.floor(Math.random() * pass.length);
+      return (
+        pass.slice(0, randomPosition) + randomChar + pass.slice(randomPosition)
+      );
+    } else {
+      return randomChar;
+    }
   };
 
   const getRandomCharacter = (characters) => {
@@ -148,7 +139,7 @@ function PasswordGenerator() {
   const handleCopyToClipboard = () => {
     if (currentPassword !== "") {
       navigator.clipboard.writeText(currentPassword);
-      setCopiedPassStatus(true);
+      setIsPassCopied(true);
     }
   };
 
