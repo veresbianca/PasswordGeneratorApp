@@ -78,6 +78,12 @@ function PasswordGenerator() {
     return "too_weak";
   };
 
+  /*
+   * We can make use of modularity here and
+   * extract the password generation functions in a separate
+   * module. The `formInputData` data can be passed through
+   * params.
+   */
   const generatePassword = () => {
     let password = "";
     const criteria = Object.keys(formInputData).filter(
