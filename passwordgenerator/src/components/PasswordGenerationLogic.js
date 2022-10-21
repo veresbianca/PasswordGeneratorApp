@@ -1,3 +1,10 @@
+/* This file does not contain any React component(s).
+ * It should be name using camelCase not PascalCase`
+ *
+ * Furthermore, this file should not be placed under the
+ * *components* folder
+ */
+
 const passwordConfiguration = {
   includeNumbers: "0123456789",
   useLowercaseLetters: "abcdefghijklmnopqrstuvwxyz",

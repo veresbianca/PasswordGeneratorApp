@@ -59,7 +59,14 @@ const checkPasswordStrength = (password) => {
   return "too_weak";
 };
 
+
 function StrengthDisplay({ currentPassword }) {
+  /*
+   * Setting state inside of a `useEffect` call
+   * is not something we should do.
+   *
+   * Use *derived state* instead.
+   */
   const [strengthStatus, setStrengthStatus] = useState("default");
 
   useEffect(() => {
@@ -80,6 +87,11 @@ function StrengthDisplay({ currentPassword }) {
         <div
           className={`strength-bar__container status-${statusProperties[strengthStatus].statusColor}`}
         >
+        {/*
+          * To better express intent, we can
+          * use "_" character to communicate that
+          * you're not going to use a param of a callback function
+          */}
           {barNumber.map((bar, i) => {
             return (
               <span

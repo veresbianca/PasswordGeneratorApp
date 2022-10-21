@@ -1,3 +1,9 @@
+/*
+ * Create a Prettier config such that
+ * everybody you collaborate with formats the
+ * code in the same way
+ */
+
 import PasswordConfigurations from "./PasswordConfigurations";
 import StrengthDisplay from "./StrengthDisplay";
 import GeneratePassButton from "./GeneratePassButton";
@@ -16,6 +22,14 @@ const initialValues = {
   characterLength: 0,
 };
 
+/*
+ * Given that a `onClick` handler
+ * receives the `event` as the only(?) param,
+ * this function will not do what it's supposed to.
+ *
+ * Fixing this involves moving the function back inside
+ * of the `PasswordGenerator` component & make use of its scope
+ */
 const handleCopyToClipboard = (currentPassword, setIsPassCopied) => {
   if (currentPassword !== "") {
     navigator.clipboard.writeText(currentPassword);

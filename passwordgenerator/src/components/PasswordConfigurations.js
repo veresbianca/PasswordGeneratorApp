@@ -18,6 +18,12 @@ function PasswordConfigurations({ handleInputChange, characterLength }) {
         name="characterLength"
       />
 
+      {/*
+        * To further improve readability and modularity,
+        * we can create two more components
+        *   * input of type checkbox
+        *   * the list of checkbox
+        */}
       <div className="configuration-input__container">
         <label className="label__container">
           <span className="label__name">Include Uppercase Letters</span>
