@@ -1,4 +1,5 @@
 import "./StrengthDisplay.css";
+import { useEffect, useState } from "react";
 
 const barNumber = [1, 2, 3, 4];
 
@@ -30,7 +31,45 @@ const statusProperties = {
   },
 };
 
-function StrengthDisplay({ strengthStatus }) {
+const checkPasswordStrength = (password) => {
+  const strong = new RegExp(
+    "(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9])(?=.{6,})"
+  );
+
+  const medium = new RegExp(
+    "^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{6,})"
+  );
+
+  const weak = new RegExp(
+    "(?=.*[a-z])(?=.{6,})|(?=.*[A-Z])(?=.{6,})|(?=.*[0-9])(?=.{6,})|(?=.*[^A-Za-z0-9])(?=.{6,})"
+  );
+
+  if (strong.test(password)) {
+    return "strong";
+  }
+
+  if (medium.test(password)) {
+    return "medium";
+  }
+
+  if (weak.test(password)) {
+    return "weak";
+  }
+
+  return "too_weak";
+};
+
+function StrengthDisplay({ currentPassword }) {
+  const [strengthStatus, setStrengthStatus] = useState("default");
+
+  useEffect(() => {
+    if (currentPassword) {
+      setStrengthStatus(checkPasswordStrength(currentPassword));
+    } else {
+      setStrengthStatus("default");
+    }
+  }, [currentPassword]);
+
   return (
     <div className="strength-display__container">
       <span className="strength-display__label">STRENGTH</span>

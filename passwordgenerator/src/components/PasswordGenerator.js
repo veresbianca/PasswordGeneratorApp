@@ -22,22 +22,11 @@ const passwordConfiguration = {
   includeSymbols: "!@#$%^&*()",
 };
 
-const passwordPlaceholder = "P4$5W0rD!";
-
 function PasswordGenerator() {
   const [formInputData, setFormInputData] = useState(initialValues);
-
-  /*
-   * Givent that this piece of state is used only to be passed
-   * as a `prop`, it can safely be moved inside that respective component
-   *
-   * What is needed for the computation of the password strenght is
-   * ONLY the `currentPassword`
-   */
-  const [strengthStatus, setStrengthStatus] = useState("default");
-  const [currentPassword, setCurrentPassword] = useState(passwordPlaceholder);
+  const [currentPassword, setCurrentPassword] = useState("");
   const [isPassCopied, setIsPassCopied] = useState(false);
-  const isEmptyPass = currentPassword === "P4$5W0rD!";
+  const isEmptyPass = currentPassword === "";
 
   const handleFormSubmit = (event) => {
     event.preventDefault();
@@ -45,37 +34,6 @@ function PasswordGenerator() {
     const generatedPassword = generatePassword();
     setCurrentPassword(generatedPassword);
     setIsPassCopied(false);
-    setStrengthStatus(checkPasswordStrength(currentPassword));
-  };
-  /*
-   * This function has no value in being declared in this component
-   */
-  const checkPasswordStrength = (password) => {
-    const strong = new RegExp(
-      "(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9])(?=.{6,})"
-    );
-
-    const medium = new RegExp(
-      "^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{6,})"
-    );
-
-    const weak = new RegExp(
-      "(?=.*[a-z])(?=.{6,})|(?=.*[A-Z])(?=.{6,})|(?=.*[0-9])(?=.{6,})|(?=.*[^A-Za-z0-9])(?=.{6,})"
-    );
-
-    if (strong.test(password)) {
-      return "strong";
-    }
-
-    if (medium.test(password)) {
-      return "medium";
-    }
-
-    if (weak.test(password)) {
-      return "weak";
-    }
-
-    return "too_weak";
   };
 
   /*
@@ -164,7 +122,7 @@ function PasswordGenerator() {
             handleInputChange={handleInputChange}
             characterLength={formInputData.characterLength}
           />
-          <StrengthDisplay strengthStatus={strengthStatus} />
+          <StrengthDisplay currentPassword={currentPassword} />
           <GeneratePassButton />
         </form>
       </div>
